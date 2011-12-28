@@ -7,11 +7,23 @@ mark2.initialize();
 function onRequest(request, response) {
 	response.writeHead(200, {"Content-Type": "text/plain"});
 
+	var json = false;
 	var puzzle = url.parse(request.url).pathname.slice(1);
+	if(puzzle.substr(-5) === ".json")
+	{
+		json = true;
+		puzzle = puzzle.substr(0, puzzle.length - 5);
+	}
 	if(mark2.available_scramblers.indexOf(puzzle) != -1)
-		response.write(mark2.scramblers[puzzle].getRandomScramble().scramble);
-	else    
+	{
+		var s = mark2.scramblers[puzzle].getRandomScramble();
+		s = json ? JSON.stringify(s) : s.scramble;
+		response.write(s);
+	}
+	else
+	{ 
 		response.write("No puzzle found");
+	}
 	response.end();
 }
 
