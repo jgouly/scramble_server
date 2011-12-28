@@ -1,3 +1,4 @@
+var http = require("http");
 var url = require("url");
 
 var mark2 = require("./mark2.js");
